@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Basics</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/vue@next" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>Pogromca Potworów</h1>
+    </header>
+    <div id="game">
+      <section id="monster" class="container">
+        <h2>Zdrowie Potwora</h2>
+        <div class="healthbar">
+          <div class="healthbar__value" :style="pasekP"></div>
+        </div>
+      </section>
+      <section id="player" class="container">
+        <h2>Twoje Zdrowie</h2>
+        <div class="healthbar">
+          <div class="healthbar__value" :style="pasekG" ></div>
+        </div>
+      </section>
+      <section class="container" v-if="zwyciezca">
+        <h2>Koniec Gry!</h2>
+        <h3 v-if="zwyciezca === 'przegrana'">Przegrałeś!</h3>
+        <h3 v-else-if="zwyciezca === 'wygrana'">Wygrałeś!</h3>
+        <h3 v-else>Remis!</h3>
+        <button @click="resetGry">Rozpocznij Nową Grę</button>
+      </section>
+      <section id="controls" v-else>
+        <button @click="atakP">ATAK</button>
+          <button :disabled="przyciskStop" @click="atakSpecjalny">ATAK SPECJALNY</button>
+        <button @click="leczenieG">ULECZ</button>
+        <button @click="poddanie">PODDAJ SIĘ</button>
+      </section>
+      <section id="log" class="container">
+        <h2>Dziennik Zdarzeń</h2>
+        <ul>
+          <li v-for="logiWiadomosci in logiWiadomosci">
+            <span
+              :class="{'log--gracz': logiWiadomosci.akcja1 === 'gracz', 'log--potwor': logiWiadomosci.akcja1 === 'potwor'}"
+              >{{ logiWiadomosci.akcja1 === 'gracz' ? 'Gracz' : 'Potwór'
+              }}</span
+            >
+            <span v-if="logiWiadomosci.akcja2 === 'leczenie'">
+              Uleczył się, dodało
+              <span class="log--leczenie">{{ logiWiadomosci.akcja3 }} zdrowia</span></span
+            >
+            <span v-else>
+              zadał
+              <span class="log--obrazenia">{{ logiWiadomosci.akcja3 }} obrażeń</span>
+            </span>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>
